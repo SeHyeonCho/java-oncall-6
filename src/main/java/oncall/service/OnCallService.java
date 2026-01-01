@@ -7,16 +7,14 @@ import java.util.List;
 import oncall.view.OnCallScheduleOrder;
 
 public class OnCallService {
-    private final OnCallScheduleOrder onCallScheduleOrder;
     private final List<List<Integer>> holidays;
 
-    public OnCallService(OnCallScheduleOrder onCallScheduleOrder) {
-        this.onCallScheduleOrder = onCallScheduleOrder;
+    public OnCallService() {
         holidays = new ArrayList<>();
         init();
     }
 
-    public List<OnCallSchedule> calculateOnCall(int month, String startDay) {
+    public List<OnCallSchedule> calculateOnCall(int month, String startDay,OnCallScheduleOrder onCallScheduleOrder) {
         List<OnCallSchedule> schedules = new ArrayList<>();
         List<String> days = List.of("월", "화", "수", "목", "금", "토", "일");
 
