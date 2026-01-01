@@ -16,6 +16,9 @@ public class Validator {
 
         try {
             int month = Integer.parseInt(input[0]);
+            if (month < 1 || month > 12) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
