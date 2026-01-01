@@ -17,6 +17,8 @@ public class InputView {
             if (validateMonthAndDay(input)) {
                 return new OnCallMonthAndDay(Integer.parseInt(input[0]), input[1]);
             }
+
+            System.out.println("[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요.");
         }
     }
 
@@ -31,6 +33,8 @@ public class InputView {
             if (validateSchedule(weekdayWorkers, holidayWorkers)) {
                 return new OnCallScheduleOrder(weekdayWorkers, holidayWorkers);
             }
+
+            System.out.println("[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요.");
         }
     }
 
