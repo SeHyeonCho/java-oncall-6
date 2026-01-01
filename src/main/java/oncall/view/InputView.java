@@ -1,8 +1,11 @@
 package oncall.view;
 
 import static oncall.common.Validator.validateMonthAndDay;
+import static oncall.common.Validator.validateSchedule;
 
 import camp.nextstep.edu.missionutils.Console;
+import java.util.Arrays;
+import java.util.List;
 
 public class InputView {
 
@@ -13,6 +16,20 @@ public class InputView {
 
             if (validateMonthAndDay(input)) {
                 return new OnCallMonthAndDay(Integer.parseInt(input[0]), input[1]);
+            }
+        }
+    }
+
+    public OnCallSchedule readSchedule() {
+        while (true) {
+            System.out.print("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
+            List<String> weekdayWorkers = Arrays.stream(Console.readLine().split(",")).toList();
+
+            System.out.print("휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
+            List<String> holidayWorkers = Arrays.stream(Console.readLine().split(",")).toList();
+
+            if (validateSchedule(weekdayWorkers, holidayWorkers)) {
+                return new OnCallSchedule(weekdayWorkers, holidayWorkers);
             }
         }
     }
