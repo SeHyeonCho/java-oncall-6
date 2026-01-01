@@ -32,39 +32,59 @@ public class OnCallService {
         while (date <= endDate) {
             String day = days.get((date + dayIdx - 1) % 7);
             boolean isHoliday = false;
+            boolean isPublicHoliday = false;
             String worker;
 
             if (day.equals("토") || day.equals("일") || holidays.get(month).contains(date)) {
                 isHoliday = true;
             }
 
-            if (isHoliday) {
-                worker = onCallScheduleOrder.holiday().get(holidayIdx);
-                if (holidaySwap != null) {
-                    worker = holidaySwap;
-                    holidaySwap = null;
-                }
-                if (!worker.equals(prevWorker)) {
-                    holidaySwap = worker;
-                    worker = onCallScheduleOrder.holiday().get(holidayIdx + 1);
-                    prevWorker = worker;
-                    holidayIdx++;
-                }
+            if (holidays.get(month).contains(date)) {
+                isPublicHoliday = true;
             }
 
-            worker = onCallScheduleOrder.weekday().get(weekdayIdx);
+            if (isHoliday) {
+                if (holidaySwap != null) {
+                    worker = holidaySwap;
+                    prevWorker = worker;
+                    holidaySwap = null;
+                    schedules.add(new OnCallSchedule(month, date, day, isPublicHoliday, worker));
+                    date++;
+                    continue;
+                }
+
+                worker = onCallScheduleOrder.holiday().get(holidayIdx % onCallScheduleOrder.holiday().size());
+                if (worker.equals(prevWorker)) {
+                    holidaySwap = worker;
+                    worker = onCallScheduleOrder.holiday().get((holidayIdx + 1) % onCallScheduleOrder.holiday().size());
+                    holidayIdx++;
+                }
+                prevWorker = worker;
+                holidayIdx++;
+                schedules.add(new OnCallSchedule(month, date, day, isPublicHoliday, worker));
+                date++;
+                continue;
+            }
+
             if (weekdaySwap != null) {
                 worker = weekdaySwap;
                 weekdaySwap = null;
-            }
-            if (!worker.equals(prevWorker)) {
-                weekdaySwap = worker;
-                worker = onCallScheduleOrder.weekday().get(weekdayIdx + 1);
                 prevWorker = worker;
-                weekdayIdx++;
+                schedules.add(new OnCallSchedule(month, date, day, isPublicHoliday, worker));
+                date++;
+                continue;
             }
 
-            schedules.add(new OnCallSchedule(month, date, day, isHoliday, worker));
+            worker = onCallScheduleOrder.weekday().get(weekdayIdx);
+            if (worker.equals(prevWorker)) {
+                weekdaySwap = worker;
+                worker = onCallScheduleOrder.weekday().get((weekdayIdx + 1) % onCallScheduleOrder.weekday().size());
+                weekdayIdx++;
+            }
+            prevWorker = worker;
+            weekdayIdx++;
+            schedules.add(new OnCallSchedule(month, date, day, isPublicHoliday, worker));
+            date++;
         }
 
         return schedules;
