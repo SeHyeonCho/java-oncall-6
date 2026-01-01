@@ -20,7 +20,7 @@ public class InputView {
         }
     }
 
-    public OnCallSchedule readSchedule() {
+    public OnCallScheduleOrder readSchedule() {
         while (true) {
             System.out.print("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
             List<String> weekdayWorkers = Arrays.stream(Console.readLine().split(",")).toList();
@@ -29,7 +29,7 @@ public class InputView {
             List<String> holidayWorkers = Arrays.stream(Console.readLine().split(",")).toList();
 
             if (validateSchedule(weekdayWorkers, holidayWorkers)) {
-                return new OnCallSchedule(weekdayWorkers, holidayWorkers);
+                return new OnCallScheduleOrder(weekdayWorkers, holidayWorkers);
             }
         }
     }
